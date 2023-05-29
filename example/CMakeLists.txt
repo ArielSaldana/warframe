@@ -4,4 +4,5 @@ project(example)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 add_executable(example main.cpp)
-target_link_libraries(example PRIVATE ${CMAKE_BINARY_DIR}/libwarframe.dylib)
+#target_link_libraries(example PRIVATE ${CMAKE_BINARY_DIR}/libwarframe.dylib)
+target_link_libraries(example PRIVATE  ${CMAKE_BINARY_DIR}/libwarframe.dylib ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY})

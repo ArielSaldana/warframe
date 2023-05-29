@@ -20,8 +20,17 @@ find_package(websocketpp CONFIG REQUIRED)
 # Add the 'include' directory to the include file search path
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-add_library(warframe SHARED src/library.cpp example/main.cpp)
-target_link_libraries(warframe PRIVATE websocketpp::websocketpp)
+# Retrieve include directories for websocketpp and add them to our include directories
+get_target_property(websocketpp_INCLUDE_DIRS websocketpp::websocketpp INTERFACE_INCLUDE_DIRECTORIES)
+include_directories(${websocketpp_INCLUDE_DIRS})
+
+add_library(warframe SHARED src/library.cpp example/main.cpp include/gateway.h src/gateway.cpp)
+#target_include_directories(warframe PRIVATE ${websocketpp_INCLUDE_DIRS})
+target_link_libraries(warframe
+        PRIVATE ${OPENSSL_CRYPTO_LIBRARY}
+        PRIVATE ${OPENSSL_SSL_LIBRARY}
+        PRIVATE websocketpp::websocketpp
+        )
 
 add_subdirectory(example)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

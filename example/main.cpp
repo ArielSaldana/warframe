@@ -2,11 +2,11 @@
 // Created by Ariel Saldana on 5/29/23.
 //
 
-#include <iostream>
+#include "gateway.h"
 #include "library.h"
+#include <iostream>
 
 int main() {
-    std::cout << "Hello" << std::endl;
-    hello();
+    Gateway::connect();
     return 0;
 }
