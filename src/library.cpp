@@ -3,5 +3,5 @@
 #include <iostream>
 
 void hello() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << "HelloGatewayEvent, World!" << std::endl;
 }

@@ -5,6 +5,7 @@
 #ifndef WARFRAME_GATEWAY_H
 #define WARFRAME_GATEWAY_H
 
+#include "gateway_event_processor.h"
 #include <iostream>
 #include <websocketpp/client.hpp>
 #include <websocketpp/config/asio_client.hpp>

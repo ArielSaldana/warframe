@@ -17,6 +17,9 @@ include_directories(${OPEN_SSL_HEADER_ROOT_DIR})
 # Dependency websocketpp required for websockets
 find_package(websocketpp CONFIG REQUIRED)
 
+# RapidJSON library to quickly parse json
+find_package(rapidjson CONFIG REQUIRED)
+
 # Add the 'include' directory to the include file search path
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
@@ -24,7 +27,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 get_target_property(websocketpp_INCLUDE_DIRS websocketpp::websocketpp INTERFACE_INCLUDE_DIRECTORIES)
 include_directories(${websocketpp_INCLUDE_DIRS})
 
-add_library(warframe SHARED src/library.cpp example/main.cpp include/gateway.h src/gateway.cpp)
+add_library(warframe SHARED src/library.cpp example/main.cpp include/gateway.h src/gateway.cpp include/erlpack/decoder.h include/erlpack/constants.h include/erlpack/encoder.h include/erlpack/sysdep.h include/encoder.h include/decoder.h include/heartbeat.h include/payload.h include/hello_gateway_event.h include/gateway_event_processor.h)
 #target_include_directories(warframe PRIVATE ${websocketpp_INCLUDE_DIRS})
 target_link_libraries(warframe
         PRIVATE ${OPENSSL_CRYPTO_LIBRARY}

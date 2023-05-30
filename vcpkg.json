@@ -8,5 +8,9 @@
   }, {
     "name" : "openssl",
     "version>=" : "3.1.0#4"
+  }, {
+    "name" : "rapidjson",
+    "version>=" : "2023-04-27",
+    "$comment" : "    # this is heuristically generated, and may not be correct\n\n    find_package(RapidJSON CONFIG REQUIRED)\n\n    target_link_libraries(main PRIVATE rapidjson)\n"
   } ]
 }
