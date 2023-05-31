@@ -15,33 +15,21 @@
 
 class EventBus {
 public:
-    EventEmitter hello_event_emitter;
+    EventEmitter<HelloEvent> hello_event_emitter;
     /* Post an event to the event bus */
     template<typename T>
     void post(Payload<T> payload) {
-
-        //        hello_event_emitter.on([&]() {
-        //            std::cout << "from lambda" << std::endl;
-        //            // your code here
-        //        });\
-
-        //        hello_event_emitter.on([]() {
-        //
-        //        });
-
         std::cout << "Attempting to register" << std::endl;
-        std::function<void(EventData)> func = [](EventData data) {
-            std::cout << "from here, data opcode: " <<  std::endl;
-            // Your code here
+        std::function<void(HelloEvent)> func = [](const HelloEvent& data) {
+            std::cout << "event_name in lambda: " << data.event_name << std::endl;
         };
 
         hello_event_emitter.on(func);
 
         if (std::is_same<T, HelloGatewayEvent>::value) {
-            std::cout << "from eventbus" << std::endl;
-            HelloEvent he(&payload);
+            HelloEvent he(payload);
+            std::cout << "event_name before emit: " << he.event_name << std::endl;
             hello_event_emitter.emit(he);
-            //            hello_event_emitter.emit(he);
         }
     }
 

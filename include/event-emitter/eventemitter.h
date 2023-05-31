@@ -10,10 +10,11 @@
 #include <string>
 #include <vector>
 
-using EventHandler = std::function<void(EventData)>;
 
+template<typename T>
 struct EventEmitter {
     std::string event_name;
+    using EventHandler = std::function<void(T)>;
 
 //    std::vector<std::function<void()>> subscribers;
     std::vector<EventHandler> subscribers;
@@ -38,7 +39,7 @@ struct EventEmitter {
         subscribers.emplace_back(EventHandler(lambda));
     }
 
-    virtual void emit(EventData &event) {
+    virtual void emit(T &event) {
 //        if (event.event_name == "") {
 //
 //        }
