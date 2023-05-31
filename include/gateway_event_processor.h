@@ -13,11 +13,14 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include <eventbus.h>
 
 class GatewayEventProcessor {
 
+    EventBus eventbus;
+
     template<typename T>
-    static Payload<T> deserialize(const rapidjson::Document &json_doc) {
+    Payload<T> deserialize(const rapidjson::Document &json_doc) {
         if (std::is_same<T, HelloGatewayEvent>::value) {
             Payload<T> p;
             p.op = json_doc["op"].GetInt();
@@ -30,7 +33,7 @@ class GatewayEventProcessor {
         }
     }
 
-    static std::pair<int, rapidjson::Document> peek_opcode(const std::string &payload_json) {
+    std::pair<int, rapidjson::Document> peek_opcode(const std::string &payload_json) {
         rapidjson::Document json_doc;
         json_doc.Parse(payload_json.c_str());
         rapidjson::Value &op_code = json_doc["op"];
@@ -38,14 +41,15 @@ class GatewayEventProcessor {
     }
 
 public:
-    static void process_event(const std::string &payload) {
+     void process_event(const std::string &payload) {
         auto event_context = peek_opcode(payload);
         auto op_code = event_context.first;
         rapidjson::Document json_document = std::move(event_context.second);
 
         if (op_code == 10) {
             auto event_payload = deserialize<HelloGatewayEvent>(json_document);
-
+            auto event_data = HelloEvent(event_payload);
+            eventbus.post(event_payload);
             std::cout << event_payload.op << std::endl;
             std::cout << event_payload.d.heartbeat_interval << std::endl;
         }

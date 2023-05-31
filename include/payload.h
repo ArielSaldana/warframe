@@ -11,7 +11,7 @@ struct Payload {
     int op;       // Opcode
     T d;          // Payload event data
     int s;        // Sequence number
-    std::string t;// Event name
+    std::string t;// EventData name
 };
 
 #endif//WARFRAME_PAYLOAD_H

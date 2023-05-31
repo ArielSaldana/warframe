@@ -2,8 +2,9 @@
 // Created by Ariel Saldana on 5/29/23.
 //
 #include "gateway.h"
-#include <iostream>
 #include <functional>
+#include <iostream>
+#include <utility>
 #include <websocketpp/common/thread.hpp>
 
 
@@ -33,16 +34,27 @@ void Gateway::on_message(client *ws_client, websocketpp::connection_hdl hdl, mes
               << " and message: " << msg->get_payload()
               << std::endl;
 
+//        HelloEvent hello;
+//        hello.
+//        GatewayEventProcessor::process_event(msg->get_payload());
+        gateway_event_processor.process_event(msg->get_payload());
+    //    websocketpp::lib::error_code ec;
 
-    GatewayEventProcessor::process_event(msg->get_payload());
+    //    ws_client->send(hdl, msg->get_payload(), msg->get_opcode(), ec);
+    //    if (ec) {
+    //        std::cout << "Echo failed because: " << ec.message() << std::endl;
+    //    }
+}
 
+void Gateway::send_message(client *ws_client, websocketpp::connection_hdl hdl, message_ptr msg) {
     websocketpp::lib::error_code ec;
 
-    ws_client->send(hdl, msg->get_payload(), msg->get_opcode(), ec);
+    ws_client->send(std::move(hdl), msg->get_payload(), msg->get_opcode(), ec);
     if (ec) {
         std::cout << "Echo failed because: " << ec.message() << std::endl;
     }
 }
+
 
 void Gateway::connect() {
     std::cout << " attempting to make a connection" << std::endl;
@@ -55,9 +67,9 @@ void Gateway::connect() {
         ws_client.set_access_channels(websocketpp::log::alevel::all);
         ws_client.clear_access_channels(websocketpp::log::alevel::frame_payload);
         ws_client.init_asio();
-        ws_client.set_message_handler(bind(&on_message, &ws_client, ::_1, ::_2));
-        ws_client.set_tls_init_handler(bind(&Gateway::on_tls_init, hostname.c_str(), ::_1));
-
+        //        ws_client.set_message_handler(bind(&on_message, &ws_client, ::_1, ::_2));
+        ws_client.set_message_handler(std::bind(&Gateway::on_message, this, &ws_client, std::placeholders::_1, std::placeholders::_2));
+        ws_client.set_tls_init_handler(std::bind(&Gateway::on_tls_init, this, hostname.c_str(), ::_1));
 
         websocketpp::lib::error_code ec;
         client::connection_ptr con = ws_client.get_connection(uri, ec);

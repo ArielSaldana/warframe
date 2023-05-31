@@ -45,7 +45,8 @@ int main() {
     //    Decoder decoder(value);
     //    auto decoded = decoder.unpack<std::string>();
     //    std::cout << decoded << std::endl;
-
-    Gateway::connect();
+    Gateway gateway;
+    gateway.connect();
+//    Gateway::connect();
     return 0;
 }

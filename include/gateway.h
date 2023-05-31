@@ -17,12 +17,16 @@ typedef websocketpp::config::asio_client::message_type::ptr message_ptr;
 class Gateway {
 
 private:
-    static context_ptr on_tls_init(const char *hostname, websocketpp::connection_hdl);
-    static void on_message(client *c, websocketpp::connection_hdl hdl, message_ptr msg);
+    client ws_client;
+    context_ptr on_tls_init(const char *hostname, websocketpp::connection_hdl);
+    void on_message(client *ws_client, websocketpp::connection_hdl hdl, message_ptr msg);
+    void send_message(client *ws_client, websocketpp::connection_hdl hdl, message_ptr msg);
 
 public:
-    static void
+    void
     connect();
+
+    GatewayEventProcessor gateway_event_processor;
 };
 
 #endif//WARFRAME_GATEWAY_H
