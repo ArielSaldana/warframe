@@ -50,6 +50,9 @@ public:
         if (op_code == 10) {
             auto event_payload = deserialize<HelloGatewayEvent>(json_document);
             auto event_data = HelloEvent(event_payload);
+            std::string name = "hello";
+            auto event_message = EventMessage<HelloGatewayEvent>(name, event_payload);
+            //todo: pass an event message that uses an enum as an identifier for the message type
             eventbus.post(event_payload);
         }
     }
