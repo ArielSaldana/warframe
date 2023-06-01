@@ -11,16 +11,17 @@
 #include <any>
 
 struct EventData {
-    std::string event_name;
+    std::string * event_name;
     std::any payload;
 
-    explicit EventData(std::string &_event_name, std::any _payload) {
-        event_name = std::move(_event_name);
-        payload = _payload;
+    explicit EventData(std::string * _event_name, std::any _payload) {
+//        event_name = std::move(_event_name);
+        event_name = _event_name;
+        payload = std::move(_payload);
     }
 
-    std::string get_event_name() const {
-        return event_name;
+    [[nodiscard]] std::string get_event_name() const {
+        return *event_name;
     }
 };
 

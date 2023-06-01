@@ -5,7 +5,7 @@
 #ifndef WARFRAME_GATEWAY_EVENT_PROCESSOR_H
 #define WARFRAME_GATEWAY_EVENT_PROCESSOR_H
 
-#include "hello_gateway_event.h"
+#include "gatewayevents/hello_gateway_event.h"
 #include "payload.h"
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include "event-emitter/eventmessage.h"
 
 class GatewayEventProcessor {
 
@@ -50,8 +51,6 @@ public:
             auto event_payload = deserialize<HelloGatewayEvent>(json_document);
             auto event_data = HelloEvent(event_payload);
             eventbus.post(event_payload);
-            std::cout << event_payload.op << std::endl;
-            std::cout << event_payload.d.heartbeat_interval << std::endl;
         }
     }
 };
