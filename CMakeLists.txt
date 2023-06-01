@@ -4,13 +4,6 @@ project(warframe)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# MacOS OpenSSL specific
-set(OPEN_SSL_HEADER_ROOT_DIR "/nix/store/6zyv2ff4f4bsa5vbn4ylimnzzisak8ga-openssl-3.0.7-dev/include/")
-set(OPENSSL_ROOT_DIR "/nix/store/in8nxwr1sjnncxzrqnprxlaxvfpvd5aq-openssl-3.0.7")
-set(OPENSSL_INCLUDE_DIR "${OPENSSL_ROOT_DIR}/include")
-set(OPENSSL_CRYPTO_LIBRARY "${OPENSSL_ROOT_DIR}/lib/libcrypto.dylib")
-set(OPENSSL_SSL_LIBRARY "${OPENSSL_ROOT_DIR}/lib/libssl.dylib")
-
 find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_ROOT_DIR})
 include_directories(${OPEN_SSL_HEADER_ROOT_DIR})
@@ -19,7 +12,7 @@ include_directories(${OPEN_SSL_HEADER_ROOT_DIR})
 find_package(websocketpp CONFIG REQUIRED)
 
 # RapidJSON library to quickly parse json
-find_package(rapidjson CONFIG REQUIRED)
+find_package(RapidJSON CONFIG REQUIRED)
 
 # Add the 'include' directory to the include file search path
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -28,12 +21,13 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 get_target_property(websocketpp_INCLUDE_DIRS websocketpp::websocketpp INTERFACE_INCLUDE_DIRECTORIES)
 include_directories(${websocketpp_INCLUDE_DIRS})
 
-add_library(warframe SHARED src/library.cpp example/main.cpp include/socket.h src/socket.cpp include/heartbeat.h include/payload.h include/hello_gateway_event.h include/gateway_event_processor.h include/event-emitter/eventemitter.h include/event-emitter/eventdata.h include/event-emitter/hello-event.h include/eventbus.h)
+add_library(warframe SHARED src/library.cpp example/main.cpp include/socket.h src/socket.cpp include/heartbeat.h include/payload.h include/gatewayevents/hello_gateway_event.h include/gateway_event_processor.h include/event-emitter/eventemitter.h include/event-emitter/eventdata.h include/event-emitter/hello-event.h include/eventbus.h include/event-emitter/eventmessage.h)
 #target_include_directories(warframe PRIVATE ${websocketpp_INCLUDE_DIRS})
 target_link_libraries(warframe
         PRIVATE ${OPENSSL_CRYPTO_LIBRARY}
         PRIVATE ${OPENSSL_SSL_LIBRARY}
         PRIVATE websocketpp::websocketpp
+        PRIVATE rapidjson
         )
 
 add_subdirectory(example)
