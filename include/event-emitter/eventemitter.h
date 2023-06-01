@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <functional>
 
 template<typename T>
 struct EventEmitter {
