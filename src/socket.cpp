@@ -1,7 +1,7 @@
 //
 // Created by Ariel Saldana on 5/29/23.
 //
-#include "gateway.h"
+#include "socket.h"
 #include <functional>
 #include <iostream>
 #include <utility>
@@ -15,7 +15,7 @@ using websocketpp::lib::placeholders::_2;
 typedef websocketpp::config::asio_client::message_type::ptr message_ptr;
 std::chrono::high_resolution_clock::time_point m_tls_init;
 
-context_ptr Gateway::on_tls_init(const char *hostname, websocketpp::connection_hdl) {
+context_ptr Socket::on_tls_init(const char *hostname, websocketpp::connection_hdl) {
     m_tls_init = std::chrono::high_resolution_clock::now();
     context_ptr ctx = websocketpp::lib::make_shared<boost::asio::ssl::context>(boost::asio::ssl::context::tls_client);
 
@@ -29,7 +29,7 @@ context_ptr Gateway::on_tls_init(const char *hostname, websocketpp::connection_h
     }
     return ctx;
 }
-void Gateway::on_message(client *ws_client, websocketpp::connection_hdl hdl, message_ptr msg) {
+void Socket::on_message(client *ws_client, websocketpp::connection_hdl hdl, message_ptr msg) {
     std::cout << "on_message called with hdl: " << hdl.lock().get()
               << " and message: " << msg->get_payload()
               << std::endl;
@@ -46,7 +46,7 @@ void Gateway::on_message(client *ws_client, websocketpp::connection_hdl hdl, mes
     //    }
 }
 
-void Gateway::send_message(client *ws_client, websocketpp::connection_hdl hdl, message_ptr msg) {
+void Socket::send_message(client *ws_client, websocketpp::connection_hdl hdl, message_ptr msg) {
     websocketpp::lib::error_code ec;
 
     ws_client->send(std::move(hdl), msg->get_payload(), msg->get_opcode(), ec);
@@ -56,7 +56,7 @@ void Gateway::send_message(client *ws_client, websocketpp::connection_hdl hdl, m
 }
 
 
-void Gateway::connect() {
+void Socket::connect() {
     std::cout << " attempting to make a connection" << std::endl;
 
     std::string uri = "wss://gateway.discord.gg/?v=10&encoding=json";
@@ -68,8 +68,8 @@ void Gateway::connect() {
         ws_client.clear_access_channels(websocketpp::log::alevel::frame_payload);
         ws_client.init_asio();
         //        ws_client.set_message_handler(bind(&on_message, &ws_client, ::_1, ::_2));
-        ws_client.set_message_handler(std::bind(&Gateway::on_message, this, &ws_client, std::placeholders::_1, std::placeholders::_2));
-        ws_client.set_tls_init_handler(std::bind(&Gateway::on_tls_init, this, hostname.c_str(), ::_1));
+        ws_client.set_message_handler(std::bind(&Socket::on_message, this, &ws_client, std::placeholders::_1, std::placeholders::_2));
+        ws_client.set_tls_init_handler(std::bind(&Socket::on_tls_init, this, hostname.c_str(), ::_1));
 
         websocketpp::lib::error_code ec;
         client::connection_ptr con = ws_client.get_connection(uri, ec);

@@ -2,8 +2,8 @@
 // Created by Ariel Saldana on 5/29/23.
 //
 
-#ifndef WARFRAME_GATEWAY_H
-#define WARFRAME_GATEWAY_H
+#ifndef WARFRAME_SOCKET_H
+#define WARFRAME_SOCKET_H
 
 #include "gateway_event_processor.h"
 #include <iostream>
@@ -14,7 +14,7 @@ typedef websocketpp::client<websocketpp::config::asio_tls_client> client;
 typedef websocketpp::lib::shared_ptr<websocketpp::lib::asio::ssl::context> context_ptr;
 typedef websocketpp::config::asio_client::message_type::ptr message_ptr;
 
-class Gateway {
+class Socket {
 
 private:
     client ws_client;
@@ -29,4 +29,4 @@ public:
     GatewayEventProcessor gateway_event_processor;
 };
 
-#endif//WARFRAME_GATEWAY_H
+#endif//WARFRAME_SOCKET_H

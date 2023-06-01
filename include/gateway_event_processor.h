@@ -10,10 +10,10 @@
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
+#include <eventbus.h>
 #include <iostream>
 #include <string>
 #include <utility>
-#include <eventbus.h>
 
 class GatewayEventProcessor {
 
@@ -41,7 +41,7 @@ class GatewayEventProcessor {
     }
 
 public:
-     void process_event(const std::string &payload) {
+    void process_event(const std::string &payload) {
         auto event_context = peek_opcode(payload);
         auto op_code = event_context.first;
         rapidjson::Document json_document = std::move(event_context.second);

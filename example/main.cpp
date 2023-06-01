@@ -2,10 +2,7 @@
 // Created by Ariel Saldana on 5/29/23.
 //
 
-#include "decoder.h"
-#include "encoder.h"
-#include "gateway.h"
-#include "library.h"
+#include "socket.h"
 #include <iostream>
 #include <string>
 
@@ -45,8 +42,8 @@ int main() {
     //    Decoder decoder(value);
     //    auto decoded = decoder.unpack<std::string>();
     //    std::cout << decoded << std::endl;
-    Gateway gateway;
+    Socket gateway;
     gateway.connect();
-//    Gateway::connect();
+    //    Socket::connect();
     return 0;
 }
