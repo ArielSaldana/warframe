@@ -21,7 +21,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 get_target_property(websocketpp_INCLUDE_DIRS websocketpp::websocketpp INTERFACE_INCLUDE_DIRECTORIES)
 include_directories(${websocketpp_INCLUDE_DIRS})
 
-add_library(warframe SHARED src/library.cpp example/main.cpp include/socket.h src/socket.cpp include/heartbeat.h include/payload.h include/gatewayevents/hello_gateway_event.h include/gateway_event_processor.h include/event-emitter/eventemitter.h include/event-emitter/eventdata.h include/event-emitter/hello-event.h include/eventbus.h include/event-emitter/eventmessage.h)
+add_library(warframe SHARED src/library.cpp example/main.cpp include/socket.h src/socket.cpp include/heartbeat.h include/payload.h include/gatewayevents/hello_gateway_event.h include/gateway_event_processor.h include/event-emitter/eventemitter.h include/event-emitter/eventdata.h include/event-emitter/hello-event.h include/eventbus.h include/event-emitter/eventmessage.h include/event-emitter/messagetype.h)
 #target_include_directories(warframe PRIVATE ${websocketpp_INCLUDE_DIRS})
 target_link_libraries(warframe
         PRIVATE ${OPENSSL_CRYPTO_LIBRARY}
