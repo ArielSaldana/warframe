@@ -75,7 +75,7 @@ public:
 
             ev.intents = 512;
             ev.properties = props;
-            ev.token = "MTA5OTM2MTQ2MzIxMjE3OTYxNg.GYSJ0f.pQE1GD4w6a998Dc8Bj_6-dbypa4Pp-TyOZ9nw8";
+            ev.token = "";
             websocketpp::lib::error_code ec;
 
 //            std::string e = stringify<IdentifyGatewayEvent>(ev)
