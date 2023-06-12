@@ -15,6 +15,14 @@
 #include <string>
 #include <utility>
 #include "event-emitter/eventmessage.h"
+#include "socket.h"
+#include "gatewayevents/identify_gateway_event.h"
+#include <websocketpp/client.hpp>
+#include <websocketpp/config/asio_client.hpp>
+
+typedef websocketpp::client<websocketpp::config::asio_tls_client> client;
+typedef websocketpp::lib::shared_ptr<websocketpp::lib::asio::ssl::context> context_ptr;
+typedef websocketpp::config::asio_client::message_type::ptr message_ptr;
 
 class GatewayEventProcessor {
 
@@ -42,7 +50,7 @@ class GatewayEventProcessor {
     }
 
 public:
-    void process_event(const std::string &payload) {
+    void process_event(client *ws_client, websocketpp::connection_hdl hdl, const std::string &payload) {
         auto event_context = peek_opcode(payload);
         auto op_code = event_context.first;
         rapidjson::Document json_document = std::move(event_context.second);
@@ -54,6 +62,33 @@ public:
             auto event_message = EventMessage<HelloGatewayEvent>(name, event_payload);
             //todo: pass an event message that uses an enum as an identifier for the message type
             eventbus.post(event_payload);
+
+            // send identify event
+            IdentifyGatewayEventProperties props;
+
+            props.browser = "warframe";
+            props.device = "warframe";
+            props.os = "linux";
+
+            IdentifyGatewayEvent ev(512, props, "");
+
+
+            ev.intents = 512;
+            ev.properties = props;
+            ev.token = "MTA5OTM2MTQ2MzIxMjE3OTYxNg.GYSJ0f.pQE1GD4w6a998Dc8Bj_6-dbypa4Pp-TyOZ9nw8";
+            websocketpp::lib::error_code ec;
+
+//            std::string e = stringify<IdentifyGatewayEvent>(ev)
+//            ws_client->send(hdl, stringify<IdentifyGatewayEvent>(ev), 2, ec);
+//            ws_client->send(std::move(hdl), ev, 2, ec);
+
+
+
+            //    ws_client->send(hdl, msg->get_payload(), msg->get_opcode(), ec);
+            //    if (ec) {
+            //        std::cout << "Echo failed because: " << ec.message() << std::endl;
+            //    }
+
         }
     }
 };

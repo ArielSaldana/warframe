@@ -37,7 +37,7 @@ void Socket::on_message(client *ws_client, websocketpp::connection_hdl hdl, mess
 //        HelloEvent hello;
 //        hello.
 //        GatewayEventProcessor::process_event(msg->get_payload());
-        gateway_event_processor.process_event(msg->get_payload());
+        gateway_event_processor.process_event(ws_client, hdl, msg->get_payload());
     //    websocketpp::lib::error_code ec;
 
     //    ws_client->send(hdl, msg->get_payload(), msg->get_opcode(), ec);
