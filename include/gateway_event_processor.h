@@ -72,7 +72,7 @@ public:
             props.browser = "warframe";
             props.device = "warframe";
             props.os = "linux";
-            std::string token = "RzoY4XCS_UVmNPMaoedIZVetPBaaNiB2";
+            std::string token = "";
             IdentifyGatewayEvent ev(token, 512, props);
 
             std::cout << ev.serialize() << std::endl;
