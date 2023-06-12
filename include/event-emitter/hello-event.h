@@ -8,7 +8,7 @@
 #define WARFRAME_HELLO_EVENT_H
 
 #include "gatewayevents/hello_gateway_event.h"
-#include "payload.h"
+#include "gatewayevents/payload.h"
 
 struct HelloEvent : public EventData {
     std::string event_name = "hello_event_emitter";

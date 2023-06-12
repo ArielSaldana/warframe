@@ -5,18 +5,18 @@
 #ifndef WARFRAME_GATEWAY_EVENT_PROCESSOR_H
 #define WARFRAME_GATEWAY_EVENT_PROCESSOR_H
 
+#include "event-emitter/eventmessage.h"
 #include "gatewayevents/hello_gateway_event.h"
-#include "payload.h"
+#include "gatewayevents/identify_gateway_event.h"
+#include "gatewayevents/payload.h"
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
+#include "socket.h"
 #include <eventbus.h>
 #include <iostream>
 #include <string>
 #include <utility>
-#include "event-emitter/eventmessage.h"
-#include "socket.h"
-#include "gatewayevents/identify_gateway_event.h"
 #include <websocketpp/client.hpp>
 #include <websocketpp/config/asio_client.hpp>
 
@@ -55,6 +55,9 @@ public:
         auto op_code = event_context.first;
         rapidjson::Document json_document = std::move(event_context.second);
 
+        std::cout << "ATTEMPTING TO PROCESS EVENT" << std::endl;
+        std::cout << op_code << std::endl;
+
         if (op_code == 10) {
             auto event_payload = deserialize<HelloGatewayEvent>(json_document);
             auto event_data = HelloEvent(event_payload);
@@ -69,17 +72,12 @@ public:
             props.browser = "warframe";
             props.device = "warframe";
             props.os = "linux";
+            std::string token = "RzoY4XCS_UVmNPMaoedIZVetPBaaNiB2";
+            IdentifyGatewayEvent ev(token, 512, props);
 
-            IdentifyGatewayEvent ev(512, props, "");
-
-
-            ev.intents = 512;
-            ev.properties = props;
-            ev.token = "";
+            std::cout << ev.serialize() << std::endl;
             websocketpp::lib::error_code ec;
-
-//            std::string e = stringify<IdentifyGatewayEvent>(ev)
-//            ws_client->send(hdl, stringify<IdentifyGatewayEvent>(ev), 2, ec);
+            ws_client->send(hdl, ev.serialize(), websocketpp::frame::opcode::text);
 //            ws_client->send(std::move(hdl), ev, 2, ec);
 
 
@@ -88,6 +86,8 @@ public:
             //    if (ec) {
             //        std::cout << "Echo failed because: " << ec.message() << std::endl;
             //    }
+
+        } else {
 
         }
     }

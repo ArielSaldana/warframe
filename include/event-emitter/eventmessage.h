@@ -8,7 +8,8 @@
 #include <utility>
 
 #include "gatewayevents/hello_gateway_event.h"
-#include "payload.h"
+#include "gatewayevents/payload.h"
+
 
 template<typename T>
 struct EventMessage {

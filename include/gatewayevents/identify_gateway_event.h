@@ -5,9 +5,9 @@
 #ifndef WARFRAME_IDENTIFY_GATEWAY_EVENT_H
 #define WARFRAME_IDENTIFY_GATEWAY_EVENT_H
 
+#include "serializable.h"
 #include <iostream>
 #include <string>
-#include "serializable.h"
 
 struct IdentifyGatewayEventProperties {
     std::string os;
@@ -20,16 +20,10 @@ struct IdentifyGatewayEvent : public Serializable {
     int intents;
     IdentifyGatewayEventProperties properties;
 
-//    IdentifyGatewayEvent() : token(""), intents(0) {
-//        properties.os = "";
-//        properties.browser = "";
-//        properties.device = "";
-//    }
-
     IdentifyGatewayEvent(const std::string &tokenValue,
                          int intentsValue,
                          const IdentifyGatewayEventProperties &propertiesValue)
-            : token(tokenValue), intents(intentsValue), properties(propertiesValue) {}
+        : token(tokenValue), intents(intentsValue), properties(propertiesValue) {}
 
     std::string serialize() override {
         rapidjson::Document document;
@@ -58,4 +52,4 @@ struct IdentifyGatewayEvent : public Serializable {
     }
 };
 
-#endif //WARFRAME_IDENTIFY_GATEWAY_EVENT_H
+#endif//WARFRAME_IDENTIFY_GATEWAY_EVENT_H

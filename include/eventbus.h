@@ -9,7 +9,7 @@
 #include "event-emitter/eventemitter.h"
 #include "event-emitter/hello-event.h"
 #include "gatewayevents/hello_gateway_event.h"
-#include "payload.h"
+#include "gatewayevents/payload.h"
 #include <iostream>
 #include <vector>
 

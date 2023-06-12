@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <string>
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
 
 class Serializable {
 public:
