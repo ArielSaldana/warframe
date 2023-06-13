@@ -5,10 +5,10 @@
 #ifndef WARFRAME_GATEWAY_EVENT_PROCESSOR_H
 #define WARFRAME_GATEWAY_EVENT_PROCESSOR_H
 
-#include "event-emitter/eventmessage.h"
-#include "gatewayevents/hello_gateway_event.h"
-#include "gatewayevents/identify_gateway_event.h"
-#include "gatewayevents/payload.h"
+//#include "event-emitter/eventmessage.h"
+//#include "gatewayevents/hello_gateway_event.h"
+//#include "gatewayevents/identify_gateway_event.h"
+//#include "gatewayevents/payload.h"
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
@@ -19,6 +19,7 @@
 #include <utility>
 #include <websocketpp/client.hpp>
 #include <websocketpp/config/asio_client.hpp>
+#include "gateway/v10/payloads/payload.h"
 
 typedef websocketpp::client<websocketpp::config::asio_tls_client> client;
 typedef websocketpp::lib::shared_ptr<websocketpp::lib::asio::ssl::context> context_ptr;
@@ -26,21 +27,21 @@ typedef websocketpp::config::asio_client::message_type::ptr message_ptr;
 
 class GatewayEventProcessor {
 
-    EventBus eventbus;
+//    EventBus eventbus;
 
-    template<typename T>
-    Payload<T> deserialize(const rapidjson::Document &json_doc) {
-        if (std::is_same<T, HelloGatewayEvent>::value) {
-            Payload<T> p;
-            p.op = json_doc["op"].GetInt();
-
-            auto data = json_doc["d"].GetObj();
-            HelloGatewayEvent hello{.heartbeat_interval = data["heartbeat_interval"].GetInt()};
-            p.d = hello;
-
-            return p;
-        }
-    }
+//    template<typename T>
+//    Payload<T> deserialize(const rapidjson::Document &json_doc) {
+//        if (std::is_same<T, HelloGatewayEvent>::value) {
+//            Payload<T> p;
+//            p.op = json_doc["op"].GetInt();
+//
+//            auto data = json_doc["d"].GetObj();
+//            HelloGatewayEvent hello{.heartbeat_interval = data["heartbeat_interval"].GetInt()};
+//            p.d = hello;
+//
+//            return p;
+//        }
+//    }
 
     std::pair<int, rapidjson::Document> peek_opcode(const std::string &payload_json) {
         rapidjson::Document json_doc;
@@ -59,29 +60,28 @@ public:
         std::cout << op_code << std::endl;
 
         if (op_code == 10) {
-            auto event_payload = deserialize<HelloGatewayEvent>(json_document);
-            auto event_data = HelloEvent(event_payload);
-            std::string name = "hello";
-            auto event_message = EventMessage<HelloGatewayEvent>(name, event_payload);
-            //todo: pass an event message that uses an enum as an identifier for the message type
-            eventbus.post(event_payload);
 
-            // send identify event
-            IdentifyGatewayEventProperties props;
-
-            props.browser = "warframe";
-            props.device = "warframe";
-            props.os = "linux";
-            std::string token = "";
-            IdentifyGatewayEvent ev(token, 512, props);
-
-            std::cout << ev.serialize() << std::endl;
-            websocketpp::lib::error_code ec;
-            ws_client->send(hdl, ev.serialize(), websocketpp::frame::opcode::text);
+            Payload::deserialize(json_document);
+//            auto event_payload = deserialize<HelloGatewayEvent>(json_document);
+//            auto event_data = HelloEvent(event_payload);
+//            std::string name = "hello";
+//            auto event_message = EventMessage<HelloGatewayEvent>(name, event_payload);
+//            //todo: pass an event message that uses an enum as an identifier for the message type
+//            eventbus.post(event_payload);
+//
+//            // send identify event
+//            IdentifyGatewayEventProperties props;
+//
+//            props.browser = "warframe";
+//            props.device = "warframe";
+//            props.os = "linux";
+//            std::string token = "";
+//            IdentifyGatewayEvent ev(token, 512, props);
+//
+//            std::cout << ev.serialize() << std::endl;
+//            websocketpp::lib::error_code ec;
+//            ws_client->send(hdl, ev.serialize(), websocketpp::frame::opcode::text);
 //            ws_client->send(std::move(hdl), ev, 2, ec);
-
-
-
             //    ws_client->send(hdl, msg->get_payload(), msg->get_opcode(), ec);
             //    if (ec) {
             //        std::cout << "Echo failed because: " << ec.message() << std::endl;
