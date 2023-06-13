@@ -10,7 +10,6 @@
 #include "gatewayevents/hello_gateway_event.h"
 #include "gatewayevents/payload.h"
 
-
 template<typename T>
 struct EventMessage {
     std::string event_name;

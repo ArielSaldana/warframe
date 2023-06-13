@@ -12,9 +12,9 @@
 
 struct EventData {
     std::string * event_name;
-    std::any payload;
+    Payload<GatewayData> payload;
 
-    explicit EventData(std::string * _event_name, std::any _payload) {
+    explicit EventData(std::string * _event_name, Payload<GatewayData> _payload) {
 //        event_name = std::move(_event_name);
         event_name = _event_name;
         payload = std::move(_payload);

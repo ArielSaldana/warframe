@@ -6,6 +6,7 @@
 #define WARFRAME_IDENTIFY_GATEWAY_EVENT_H
 
 #include "serializable.h"
+#include "gateway_data.h"
 #include <iostream>
 #include <string>
 
@@ -15,7 +16,7 @@ struct IdentifyGatewayEventProperties {
     std::string device;
 };
 
-struct IdentifyGatewayEvent : public Serializable {
+struct IdentifyGatewayEvent : public Serializable, GatewayData {
     std::string token;
     int intents;
     IdentifyGatewayEventProperties properties;

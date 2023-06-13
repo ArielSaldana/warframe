@@ -5,7 +5,9 @@
 #ifndef WARFRAME_HELLO_GATEWAY_EVENT_H
 #define WARFRAME_HELLO_GATEWAY_EVENT_H
 
-struct HelloGatewayEvent {
+#include "gateway_data.h"
+
+struct HelloGatewayEvent: public GatewayData {
     int heartbeat_interval;
 };
 

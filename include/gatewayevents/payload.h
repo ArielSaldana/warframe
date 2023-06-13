@@ -10,6 +10,8 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 #include <string>
+#include <type_traits>
+
 template<typename T>
 struct Payload : public Serializable {
     int op;       // Opcode
@@ -22,8 +24,7 @@ struct Payload : public Serializable {
                 document.SetObject();
                 rapidjson::Value json(rapidjson::kObjectType);
                 json.AddMember("op", op, document.GetAllocator());
-                json.AddMember("d", d, document.GetAllocator());
-//                json.AddMember("s", s, document.GetAllocator());
+//                json.AddMember("d", d, document.GetAllocator());  how do we get this working
                 json.AddMember("device", rapidjson::Value(t.c_str(), document.GetAllocator()).Move(),
                                           document.GetAllocator());
         return "";
