@@ -13,7 +13,7 @@
 
 struct Payload {
     int op;
-    PayloadData d;
+    PayloadData *d;
     int s;
     std::string t;
 
@@ -29,13 +29,10 @@ public:
             //if (std::is_same<T, HelloGatewayEvent>::value) {
             if (json.HasMember("d") ) {
                 auto data = json["d"].GetObj();
-                HelloGatewayEvent ev;
-                ev.deserialize(data);
-//                auto hello_gateway_event = HelloGatewayEvent().deserialize(data);
-                std::cout << ev.heartbeat_interval << std::endl;
-//                HelloGatewayEvent hello{.heartbeat_interval = data["heartbeat_interval"].GetInt()};
-//                p.d = hello;
-
+                HelloGatewayEvent ev(data);
+                //todo: passing reference to HelloGatewayEvent, figure out how to access the content.
+                payload.d = &ev;
+                std::cout << payload.d << std::endl;
             }
         }
         // Deserialize the d member based on its type
